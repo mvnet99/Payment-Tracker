@@ -2,10 +2,6 @@ const { useState, useEffect } = React;
 
 function App() {
   const [payments, setPayments] = useState([]);
-  const [name, setName] = useState('');
-  const [amount, setAmount] = useState('');
-  const [isAdminMode, setIsAdminMode] = useState(false);
-  const [secretCode, setSecretCode] = useState('');
   const [titleColor, setTitleColor] = useState('#000000');
 
   useEffect(() => {
@@ -19,25 +15,6 @@ function App() {
         console.error('Error fetching payments:', error);
       });
   }, []);
-
-  useEffect(() => {
-    const handleKeyPress = (event) => {
-      setSecretCode(prevCode => prevCode + event.key);
-    };
-
-    window.addEventListener('keypress', handleKeyPress);
-
-    return () => {
-      window.removeEventListener('keypress', handleKeyPress);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (secretCode.endsWith('adminmode')) {
-      setIsAdminMode(prevMode => !prevMode);
-      setSecretCode('');
-    }
-  }, [secretCode]);
 
   useEffect(() => {
     const changeColor = () => {
@@ -67,24 +44,6 @@ function App() {
 
     return () => clearInterval(intervalId);
   }, []);
-
-  const addPayment = (e) => {
-    e.preventDefault();
-    if (name && amount) {
-      const newPayment = {
-        id: Date.now().toString(),
-        name,
-        amount: parseFloat(amount)
-      };
-      setPayments([...payments, newPayment]);
-      setName('');
-      setAmount('');
-    }
-  };
-
-  const deletePayment = (id) => {
-    setPayments(payments.filter(payment => payment.id !== id));
-  };
 
   const totalAmount = payments.reduce((sum, payment) => sum + payment.amount, 0);
 
@@ -137,7 +96,7 @@ function App() {
       },
       payments.map((payment, index) => 
         React.createElement('div', {
-          key: payment.id || payment.name,
+          key: payment.name,
           style: {
             width: `${(payment.amount / totalAmount) * 100}%`,
             height: '100%',
@@ -155,7 +114,7 @@ function App() {
         React.createElement(
           'span',
           {
-            key: payment.id || payment.name,
+            key: payment.name,
             style: {
               backgroundColor: getRandomColor(),
               color: '#333',
@@ -167,47 +126,8 @@ function App() {
               alignItems: 'center'
             }
           },
-          `${payment.name} ($${payment.amount})`,
-          isAdminMode && React.createElement(
-            'button',
-            {
-              onClick: () => deletePayment(payment.id || payment.name),
-              style: {
-                marginLeft: '5px',
-                background: 'none',
-                border: 'none',
-                color: '#f44336',
-                cursor: 'pointer',
-                fontSize: '14px',
-                fontWeight: 'bold'
-              }
-            },
-            '×'
-          )
+          `${payment.name} ($${payment.amount})`
         )
-      )
-    ),
-    isAdminMode && React.createElement(
-      'form',
-      { onSubmit: addPayment, style: { marginBottom: '20px', display: 'flex', gap: '10px' } },
-      React.createElement('input', {
-        type: 'text',
-        value: name,
-        onChange: (e) => setName(e.target.value),
-        placeholder: 'Name',
-        style: { flex: 1, padding: '5px' }
-      }),
-      React.createElement('input', {
-        type: 'number',
-        value: amount,
-        onChange: (e) => setAmount(e.target.value),
-        placeholder: 'Amount',
-        style: { flex: 1, padding: '5px' }
-      }),
-      React.createElement(
-        'button',
-        { type: 'submit', style: { padding: '5px 10px', backgroundColor: '#2196F3', color: 'white', border: 'none', borderRadius: '4px' } },
-        'Add Payment'
       )
     )
   );
