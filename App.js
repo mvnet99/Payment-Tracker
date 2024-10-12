@@ -74,7 +74,7 @@ function App() {
   return React.createElement(
     'div',
     { style: { fontFamily: 'Arial, sans-serif', maxWidth: '400px', margin: '0 auto', padding: '20px' } },
-    React.createElement('h1', { style: { color: titleColor, transition: 'color 0.5s ease' } }, 'Payments Tracker'),
+    React.createElement('h1', { style: { color: titleColor, transition: 'color 0.5s ease' } }, 'Payment Tracker'),
     React.createElement(
       'div',
       { style: { marginBottom: '10px' } },
@@ -96,70 +96,66 @@ function App() {
         }
       })
     ),
-    isAdminMode && React.createElement(
-      React.Fragment,
-      null,
-      React.createElement(
-        'form',
-        { onSubmit: addPayment, style: { marginBottom: '20px' } },
-        React.createElement('input', {
-          type: 'text',
-          value: name,
-          onChange: (e) => setName(e.target.value),
-          placeholder: 'Name',
-          style: { marginRight: '10px', padding: '5px' }
-        }),
-        React.createElement('input', {
-          type: 'number',
-          value: amount,
-          onChange: (e) => setAmount(e.target.value),
-          placeholder: 'Amount',
-          style: { marginRight: '10px', padding: '5px' }
-        }),
+    React.createElement(
+      'div',
+      { style: { display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '20px' } },
+      payments.map((payment) =>
         React.createElement(
-          'button',
-          { type: 'submit', style: { padding: '5px 10px', backgroundColor: '#2196F3', color: 'white', border: 'none', borderRadius: '4px' } },
-          'Add Payment'
-        )
-      ),
-      React.createElement(
-        'div',
-        { style: { display: 'flex', flexWrap: 'wrap', gap: '10px' } },
-        payments.map((payment) =>
-          React.createElement(
-            'span',
+          'span',
+          {
+            key: payment.id,
+            style: {
+              backgroundColor: getRandomColor(),
+              color: '#333',
+              borderRadius: '20px',
+              padding: '5px 10px',
+              fontSize: '14px',
+              fontWeight: 'bold',
+              display: 'flex',
+              alignItems: 'center'
+            }
+          },
+          payment.name,
+          isAdminMode && React.createElement(
+            'button',
             {
-              key: payment.id,
+              onClick: () => deletePayment(payment.id),
               style: {
-                backgroundColor: getRandomColor(),
-                color: '#333',
-                borderRadius: '20px',
-                padding: '5px 10px',
+                marginLeft: '5px',
+                background: 'none',
+                border: 'none',
+                color: '#f44336',
+                cursor: 'pointer',
                 fontSize: '14px',
-                fontWeight: 'bold',
-                display: 'flex',
-                alignItems: 'center'
+                fontWeight: 'bold'
               }
             },
-            payment.name,
-            React.createElement(
-              'button',
-              {
-                onClick: () => deletePayment(payment.id),
-                style: {
-                  marginLeft: '5px',
-                  background: 'none',
-                  border: 'none',
-                  color: '#f44336',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  fontWeight: 'bold'
-                }
-              },
-              '×'
-            )
+            '×'
           )
         )
+      )
+    ),
+    isAdminMode && React.createElement(
+      'form',
+      { onSubmit: addPayment, style: { marginBottom: '20px' } },
+      React.createElement('input', {
+        type: 'text',
+        value: name,
+        onChange: (e) => setName(e.target.value),
+        placeholder: 'Name',
+        style: { marginRight: '10px', padding: '5px' }
+      }),
+      React.createElement('input', {
+        type: 'number',
+        value: amount,
+        onChange: (e) => setAmount(e.target.value),
+        placeholder: 'Amount',
+        style: { marginRight: '10px', padding: '5px' }
+      }),
+      React.createElement(
+        'button',
+        { type: 'submit', style: { padding: '5px 10px', backgroundColor: '#2196F3', color: 'white', border: 'none', borderRadius: '4px' } },
+        'Add Payment'
       )
     )
   );
