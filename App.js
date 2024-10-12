@@ -73,11 +73,11 @@ function App() {
 
   return React.createElement(
     'div',
-    { style: { fontFamily: 'Arial, sans-serif', maxWidth: '400px', margin: '0 auto', padding: '20px' } },
-    React.createElement('h1', { style: { color: titleColor, transition: 'color 0.5s ease' } }, 'Payments Tracker'),
+    { style: { fontFamily: 'Arial, sans-serif', maxWidth: '600px', margin: '0 auto', padding: '20px' } },
+    React.createElement('h1', { style: { color: titleColor, transition: 'color 0.5s ease', textAlign: 'center' } }, 'Payment Tracker'),
     React.createElement(
       'div',
-      { style: { marginBottom: '10px' } },
+      { style: { marginBottom: '10px', textAlign: 'left' } },
       React.createElement(
         'span',
         { style: { fontWeight: 'bold' } },
@@ -98,30 +98,32 @@ function App() {
     ),
     React.createElement(
       'div',
-      { style: { display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '20px' } },
+      { style: { display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px' } },
       payments.map((payment) =>
         React.createElement(
-          'span',
+          'div',
           {
             key: payment.id,
             style: {
               backgroundColor: getRandomColor(),
               color: '#333',
-              borderRadius: '20px',
-              padding: '5px 10px',
+              borderRadius: '5px',
+              padding: '10px',
               fontSize: '14px',
               fontWeight: 'bold',
               display: 'flex',
+              justifyContent: 'space-between',
               alignItems: 'center'
             }
           },
-          payment.name,
+          React.createElement('span', null, payment.name),
+          React.createElement('span', null, `$${payment.amount.toFixed(2)}`),
           isAdminMode && React.createElement(
             'button',
             {
               onClick: () => deletePayment(payment.id),
               style: {
-                marginLeft: '5px',
+                marginLeft: '10px',
                 background: 'none',
                 border: 'none',
                 color: '#f44336',
@@ -137,20 +139,20 @@ function App() {
     ),
     isAdminMode && React.createElement(
       'form',
-      { onSubmit: addPayment, style: { marginBottom: '20px' } },
+      { onSubmit: addPayment, style: { marginBottom: '20px', display: 'flex', gap: '10px' } },
       React.createElement('input', {
         type: 'text',
         value: name,
         onChange: (e) => setName(e.target.value),
         placeholder: 'Name',
-        style: { marginRight: '10px', padding: '5px' }
+        style: { flex: 1, padding: '5px' }
       }),
       React.createElement('input', {
         type: 'number',
         value: amount,
         onChange: (e) => setAmount(e.target.value),
         placeholder: 'Amount',
-        style: { marginRight: '10px', padding: '5px' }
+        style: { flex: 1, padding: '5px' }
       }),
       React.createElement(
         'button',
