@@ -1,4 +1,9 @@
 [
   {"name": "Sai & Family", "amount": 85},
-  {"name": "Sundeep & Family", "amount": 85}
+  {"name": "Sundeep & Family", "amount": 85},
+  {"name": "Naresh & Family", "amount": 85},
+  {"name": "Suresh & Family", "amount": 85},
+  {"name": "Seshank & Family", "amount": 85},
+  {"name": "Prakash K & Family", "amount": 85},
+  {"name": "Ravi & Family", "amount": 85}
 ]
