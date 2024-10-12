@@ -87,7 +87,6 @@ function App() {
   };
 
   const totalAmount = payments.reduce((sum, payment) => sum + payment.amount, 0);
-  const maxAmount = Math.max(...payments.map(p => p.amount), 100);
 
   const getRandomColor = () => {
     const colors = ['#BBDEFB', '#C8E6C9', '#FFF9C4', '#FFCDD2', '#E1BEE7', '#F8BBD0'];
@@ -125,15 +124,29 @@ function App() {
     ),
     React.createElement(
       'div',
-      { style: { width: '100%', backgroundColor: '#e0e0e0', borderRadius: '10px', height: '10px', marginBottom: '20px' } },
-      React.createElement('div', {
-        style: {
-          width: `${(totalAmount / maxAmount) * 100}%`,
-          backgroundColor: '#2196F3',
-          height: '100%',
-          borderRadius: '10px'
-        }
-      })
+      { 
+        style: { 
+          width: '100%', 
+          height: '20px', 
+          backgroundColor: '#e0e0e0', 
+          borderRadius: '10px', 
+          overflow: 'hidden',
+          display: 'flex',
+          marginBottom: '20px'
+        } 
+      },
+      payments.map((payment, index) => 
+        React.createElement('div', {
+          key: payment.id || payment.name,
+          style: {
+            width: `${(payment.amount / totalAmount) * 100}%`,
+            height: '100%',
+            backgroundColor: getRandomColor(),
+            transition: 'width 0.5s ease'
+          },
+          title: `${payment.name}: $${payment.amount}`
+        })
+      )
     ),
     React.createElement(
       'div',
@@ -154,7 +167,7 @@ function App() {
               alignItems: 'center'
             }
           },
-          payment.name,
+          `${payment.name} ($${payment.amount})`,
           isAdminMode && React.createElement(
             'button',
             {
