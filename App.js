@@ -9,15 +9,16 @@ function App() {
   const [titleColor, setTitleColor] = useState('#000000');
 
   useEffect(() => {
-    const savedPayments = localStorage.getItem('payments');
-    if (savedPayments) {
-      setPayments(JSON.parse(savedPayments));
-    }
+    // Fetch data from payments.txt
+    fetch('payments.txt')
+      .then(response => response.json())
+      .then(data => {
+        setPayments(data);
+      })
+      .catch(error => {
+        console.error('Error fetching payments:', error);
+      });
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem('payments', JSON.stringify(payments));
-  }, [payments]);
 
   useEffect(() => {
     const handleKeyPress = (event) => {
@@ -141,7 +142,7 @@ function App() {
         React.createElement(
           'span',
           {
-            key: payment.id,
+            key: payment.id || payment.name,
             style: {
               backgroundColor: getRandomColor(),
               color: '#333',
@@ -157,7 +158,7 @@ function App() {
           isAdminMode && React.createElement(
             'button',
             {
-              onClick: () => deletePayment(payment.id),
+              onClick: () => deletePayment(payment.id || payment.name),
               style: {
                 marginLeft: '5px',
                 background: 'none',
