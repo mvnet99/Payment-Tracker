@@ -1,18 +1,20 @@
-const App = () => {
-  const [payments, setPayments] = React.useState(() => {
+const { useState, useEffect } = React;
+
+function App() {
+  const [payments, setPayments] = useState(() => {
     const savedPayments = localStorage.getItem('payments');
     return savedPayments ? JSON.parse(savedPayments) : [];
   });
-  const [name, setName] = React.useState('');
-  const [amount, setAmount] = React.useState('');
-  const [isAdminMode, setIsAdminMode] = React.useState(false);
-  const [secretCode, setSecretCode] = React.useState('');
+  const [name, setName] = useState('');
+  const [amount, setAmount] = useState('');
+  const [isAdminMode, setIsAdminMode] = useState(false);
+  const [secretCode, setSecretCode] = useState('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem('payments', JSON.stringify(payments));
   }, [payments]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleKeyPress = (event) => {
       setSecretCode(prevCode => prevCode + event.key);
     };
@@ -24,7 +26,7 @@ const App = () => {
     };
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (secretCode.endsWith('adminmode')) {
       setIsAdminMode(prevMode => !prevMode);
       setSecretCode('');
@@ -57,83 +59,98 @@ const App = () => {
     return colors[Math.floor(Math.random() * colors.length)];
   };
 
-  return (
-    <div style={{ fontFamily: 'Arial, sans-serif', maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
-      <h1>Payment Tracker</h1>
-      
-      <div style={{ marginBottom: '10px' }}>
-        <span style={{ fontWeight: 'bold' }}>
-          Total Collected: ${totalAmount.toFixed(2)}
-        </span>
-      </div>
-      <div style={{ width: '100%', backgroundColor: '#e0e0e0', borderRadius: '10px', height: '10px', marginBottom: '20px' }}>
-        <div
-          style={{
-            width: `${(totalAmount / maxAmount) * 100}%`,
-            backgroundColor: '#2196F3',
-            height: '100%',
-            borderRadius: '10px'
-          }}
-        ></div>
-      </div>
-
-      {isAdminMode && (
-        <>
-          <form onSubmit={addPayment} style={{ marginBottom: '20px' }}>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Name"
-              style={{ marginRight: '10px', padding: '5px' }}
-            />
-            <input
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="Amount"
-              style={{ marginRight: '10px', padding: '5px' }}
-            />
-            <button type="submit" style={{ padding: '5px 10px', backgroundColor: '#2196F3', color: 'white', border: 'none', borderRadius: '4px' }}>Add Payment</button>
-          </form>
-
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-            {payments.map((payment) => (
-              <span 
-                key={payment.id} 
-                style={{
-                  backgroundColor: getRandomColor(),
-                  color: '#333',
-                  borderRadius: '20px',
-                  padding: '5px 10px',
+  return React.createElement(
+    'div',
+    { style: { fontFamily: 'Arial, sans-serif', maxWidth: '400px', margin: '0 auto', padding: '20px' } },
+    React.createElement('h1', null, 'Payment Tracker'),
+    React.createElement(
+      'div',
+      { style: { marginBottom: '10px' } },
+      React.createElement(
+        'span',
+        { style: { fontWeight: 'bold' } },
+        `Total Collected: $${totalAmount.toFixed(2)}`
+      )
+    ),
+    React.createElement(
+      'div',
+      { style: { width: '100%', backgroundColor: '#e0e0e0', borderRadius: '10px', height: '10px', marginBottom: '20px' } },
+      React.createElement('div', {
+        style: {
+          width: `${(totalAmount / maxAmount) * 100}%`,
+          backgroundColor: '#2196F3',
+          height: '100%',
+          borderRadius: '10px'
+        }
+      })
+    ),
+    isAdminMode && React.createElement(
+      React.Fragment,
+      null,
+      React.createElement(
+        'form',
+        { onSubmit: addPayment, style: { marginBottom: '20px' } },
+        React.createElement('input', {
+          type: 'text',
+          value: name,
+          onChange: (e) => setName(e.target.value),
+          placeholder: 'Name',
+          style: { marginRight: '10px', padding: '5px' }
+        }),
+        React.createElement('input', {
+          type: 'number',
+          value: amount,
+          onChange: (e) => setAmount(e.target.value),
+          placeholder: 'Amount',
+          style: { marginRight: '10px', padding: '5px' }
+        }),
+        React.createElement(
+          'button',
+          { type: 'submit', style: { padding: '5px 10px', backgroundColor: '#2196F3', color: 'white', border: 'none', borderRadius: '4px' } },
+          'Add Payment'
+        )
+      ),
+      React.createElement(
+        'div',
+        { style: { display: 'flex', flexWrap: 'wrap', gap: '10px' } },
+        payments.map((payment) =>
+          React.createElement(
+            'span',
+            {
+              key: payment.id,
+              style: {
+                backgroundColor: getRandomColor(),
+                color: '#333',
+                borderRadius: '20px',
+                padding: '5px 10px',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                display: 'flex',
+                alignItems: 'center'
+              }
+            },
+            payment.name,
+            React.createElement(
+              'button',
+              {
+                onClick: () => deletePayment(payment.id),
+                style: {
+                  marginLeft: '5px',
+                  background: 'none',
+                  border: 'none',
+                  color: '#f44336',
+                  cursor: 'pointer',
                   fontSize: '14px',
-                  fontWeight: 'bold',
-                  display: 'flex',
-                  alignItems: 'center'
-                }}
-              >
-                {payment.name}
-                <button
-                  onClick={() => deletePayment(payment.id)}
-                  style={{
-                    marginLeft: '5px',
-                    background: 'none',
-                    border: 'none',
-                    color: '#f44336',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    fontWeight: 'bold'
-                  }}
-                >
-                  ×
-                </button>
-              </span>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
+                  fontWeight: 'bold'
+                }
+              },
+              '×'
+            )
+          )
+        )
+      )
+    )
   );
-};
+}
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(React.createElement(App), document.getElementById('root'));
