@@ -9,6 +9,7 @@ function App() {
   const [amount, setAmount] = useState('');
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [secretCode, setSecretCode] = useState('');
+  const [titleColor, setTitleColor] = useState('#000000');
 
   useEffect(() => {
     localStorage.setItem('payments', JSON.stringify(payments));
@@ -32,6 +33,17 @@ function App() {
       setSecretCode('');
     }
   }, [secretCode]);
+
+  useEffect(() => {
+    const changeColor = () => {
+      const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+      setTitleColor(randomColor);
+    };
+
+    const intervalId = setInterval(changeColor, 2000); // Change color every 2 seconds
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const addPayment = (e) => {
     e.preventDefault();
@@ -62,7 +74,7 @@ function App() {
   return React.createElement(
     'div',
     { style: { fontFamily: 'Arial, sans-serif', maxWidth: '400px', margin: '0 auto', padding: '20px' } },
-    React.createElement('h1', null, 'Payment Tracker'),
+    React.createElement('h1', { style: { color: titleColor, transition: 'color 0.5s ease' } }, 'Payment Tracker'),
     React.createElement(
       'div',
       { style: { marginBottom: '10px' } },
