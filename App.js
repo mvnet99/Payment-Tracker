@@ -1,4 +1,4 @@
-const { useState, useEffect } = React;
+onst { useState, useEffect } = React;
 
 function App() {
   const [payments, setPayments] = useState([]);
@@ -9,14 +9,31 @@ function App() {
   const [titleColor, setTitleColor] = useState('#000000');
 
   useEffect(() => {
-    const savedPayments = localStorage.getItem('payments');
-    if (savedPayments) {
-      setPayments(JSON.parse(savedPayments));
-    }
+    // Fetch initial data from the text file
+    fetch('payments.txt')
+      .then(response => response.json())
+      .then(fileData => {
+        const localData = JSON.parse(localStorage.getItem('payments') || '[]');
+        // Combine file data with local data, preferring local data for updates
+        const combinedData = [...fileData, ...localData.filter(item => 
+          !fileData.some(fileItem => fileItem.name === item.name)
+        )];
+        setPayments(combinedData);
+      })
+      .catch(error => {
+        console.error('Error fetching payments:', error);
+        const localData = JSON.parse(localStorage.getItem('payments') || '[]');
+        setPayments(localData);
+      });
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('payments', JSON.stringify(payments));
+    // Only store updates in localStorage
+    const fileData = JSON.parse(localStorage.getItem('fileData') || '[]');
+    const updatesOnly = payments.filter(item => 
+      !fileData.some(fileItem => fileItem.name === item.name)
+    );
+    localStorage.setItem('payments', JSON.stringify(updatesOnly));
   }, [payments]);
 
   useEffect(() => {
@@ -141,7 +158,7 @@ function App() {
         React.createElement(
           'span',
           {
-            key: payment.id,
+            key: payment.id || payment.name,
             style: {
               backgroundColor: getRandomColor(),
               color: '#333',
@@ -157,7 +174,7 @@ function App() {
           isAdminMode && React.createElement(
             'button',
             {
-              onClick: () => deletePayment(payment.id),
+              onClick: () => deletePayment(payment.id || payment.name),
               style: {
                 marginLeft: '5px',
                 background: 'none',
