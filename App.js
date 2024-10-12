@@ -74,7 +74,7 @@ function App() {
   return React.createElement(
     'div',
     { style: { fontFamily: 'Arial, sans-serif', maxWidth: '400px', margin: '0 auto', padding: '20px' } },
-    React.createElement('h1', { style: { color: titleColor, transition: 'color 0.5s ease' } }, 'Payment Tracker'),
+    React.createElement('h1', { style: { color: titleColor, transition: 'color 0.5s ease' } }, 'Payments Tracker'),
     React.createElement(
       'div',
       { style: { marginBottom: '10px' } },
