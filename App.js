@@ -46,20 +46,43 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Cracker animation
-    const createCracker = () => {
-      const cracker = document.createElement('div');
-      cracker.className = 'cracker';
-      cracker.style.left = Math.random() * 100 + 'vw';
-      cracker.style.animationDuration = (Math.random() * 3 + 2) + 's';
-      document.body.appendChild(cracker);
+    // Intense fireworks animation
+    const createFirework = () => {
+      const firework = document.createElement('div');
+      firework.className = 'firework';
+      firework.style.left = Math.random() * 100 + 'vw';
+      firework.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
+      document.body.appendChild(firework);
 
       setTimeout(() => {
-        cracker.remove();
-      }, 5000);
+        firework.remove();
+      }, 1500);
     };
 
-    const intervalId = setInterval(createCracker, 1000);
+    const createBurst = (x, y) => {
+      for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+        particle.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        particle.style.transform = `rotate(${Math.random() * 360}deg)`;
+        document.body.appendChild(particle);
+
+        setTimeout(() => {
+          particle.remove();
+        }, 1000);
+      }
+    };
+
+    const intervalId = setInterval(() => {
+      createFirework();
+      if (Math.random() > 0.7) {
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+        createBurst(x, y);
+      }
+    }, 100);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -90,30 +113,47 @@ function App() {
     return colors[Math.floor(Math.random() * colors.length)];
   };
 
-  // CSS for cracker animation
-  const crackerStyles = `
-    .cracker {
+  // CSS for intense fireworks animation
+  const fireworkStyles = `
+    .firework {
       position: fixed;
-      bottom: -20px;
-      width: 10px;
-      height: 10px;
-      background: gold;
+      bottom: -10px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
-      animation: rise linear forwards;
+      animation: rise cubic-bezier(0.15, 0.5, 0.5, 0.85) forwards;
+    }
+    .particle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      animation: burst 1s cubic-bezier(0.15, 0.5, 0.5, 0.85) forwards;
     }
     @keyframes rise {
       0% {
-        bottom: -20px;
+        bottom: -10px;
         transform: scale(1);
         opacity: 1;
+        background: white;
       }
-      75% {
-        transform: scale(2);
-        opacity: 1;
+      50% {
+        background: yellow;
       }
       100% {
         bottom: 100vh;
         transform: scale(0);
+        opacity: 0;
+        background: red;
+      }
+    }
+    @keyframes burst {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
         opacity: 0;
       }
     }
@@ -122,7 +162,7 @@ function App() {
   return React.createElement(
     'div',
     { style: { fontFamily: 'Arial, sans-serif', maxWidth: '600px', margin: '0 auto', padding: '20px' } },
-    React.createElement('style', null, crackerStyles),
+    React.createElement('style', null, fireworkStyles),
     React.createElement('h1', { style: { color: titleColor, transition: 'color 0.5s ease', textAlign: 'center' } }, 'Payment Tracker'),
     React.createElement(
       'div',
