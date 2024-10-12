@@ -46,11 +46,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Intense fireworks animation
+    // Full-page fireworks animation
     const createFirework = () => {
       const firework = document.createElement('div');
       firework.className = 'firework';
       firework.style.left = Math.random() * 100 + 'vw';
+      firework.style.top = Math.random() * 100 + 'vh';
       firework.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
       document.body.appendChild(firework);
 
@@ -66,7 +67,8 @@ function App() {
         particle.style.left = x + 'px';
         particle.style.top = y + 'px';
         particle.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-        particle.style.transform = `rotate(${Math.random() * 360}deg)`;
+        particle.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+        particle.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
         document.body.appendChild(particle);
 
         setTimeout(() => {
@@ -113,15 +115,17 @@ function App() {
     return colors[Math.floor(Math.random() * colors.length)];
   };
 
-  // CSS for intense fireworks animation
+  // CSS for full-page fireworks animation
   const fireworkStyles = `
+    body {
+      overflow: hidden;
+    }
     .firework {
       position: fixed;
-      bottom: -10px;
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      animation: rise cubic-bezier(0.15, 0.5, 0.5, 0.85) forwards;
+      animation: explode 1s ease-out forwards;
     }
     .particle {
       position: fixed;
@@ -130,9 +134,8 @@ function App() {
       border-radius: 50%;
       animation: burst 1s cubic-bezier(0.15, 0.5, 0.5, 0.85) forwards;
     }
-    @keyframes rise {
+    @keyframes explode {
       0% {
-        bottom: -10px;
         transform: scale(1);
         opacity: 1;
         background: white;
@@ -141,7 +144,6 @@ function App() {
         background: yellow;
       }
       100% {
-        bottom: 100vh;
         transform: scale(0);
         opacity: 0;
         background: red;
@@ -161,9 +163,9 @@ function App() {
 
   return React.createElement(
     'div',
-    { style: { fontFamily: 'Arial, sans-serif', maxWidth: '600px', margin: '0 auto', padding: '20px' } },
+    { style: { fontFamily: 'Arial, sans-serif', maxWidth: '600px', margin: '0 auto', padding: '20px', position: 'relative', zIndex: 1 } },
     React.createElement('style', null, fireworkStyles),
-    React.createElement('h1', { style: { color: titleColor, transition: 'color 0.5s ease', textAlign: 'center' } }, 'Payment Tracker'),
+    React.createElement('h1', { style: { color: titleColor, transition: 'color 0.5s ease', textAlign: 'left' } }, 'Payment Tracker'),
     React.createElement(
       'div',
       { style: { marginBottom: '10px', textAlign: 'left' } },
