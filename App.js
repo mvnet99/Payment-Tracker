@@ -40,7 +40,26 @@ function App() {
       setTitleColor(randomColor);
     };
 
-    const intervalId = setInterval(changeColor, 2000); // Change color every 2 seconds
+    const intervalId = setInterval(changeColor, 2000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    // Cracker animation
+    const createCracker = () => {
+      const cracker = document.createElement('div');
+      cracker.className = 'cracker';
+      cracker.style.left = Math.random() * 100 + 'vw';
+      cracker.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      document.body.appendChild(cracker);
+
+      setTimeout(() => {
+        cracker.remove();
+      }, 5000);
+    };
+
+    const intervalId = setInterval(createCracker, 1000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -71,9 +90,39 @@ function App() {
     return colors[Math.floor(Math.random() * colors.length)];
   };
 
+  // CSS for cracker animation
+  const crackerStyles = `
+    .cracker {
+      position: fixed;
+      bottom: -20px;
+      width: 10px;
+      height: 10px;
+      background: gold;
+      border-radius: 50%;
+      animation: rise linear forwards;
+    }
+    @keyframes rise {
+      0% {
+        bottom: -20px;
+        transform: scale(1);
+        opacity: 1;
+      }
+      75% {
+        transform: scale(2);
+        opacity: 1;
+      }
+      100% {
+        bottom: 100vh;
+        transform: scale(0);
+        opacity: 0;
+      }
+    }
+  `;
+
   return React.createElement(
     'div',
     { style: { fontFamily: 'Arial, sans-serif', maxWidth: '600px', margin: '0 auto', padding: '20px' } },
+    React.createElement('style', null, crackerStyles),
     React.createElement('h1', { style: { color: titleColor, transition: 'color 0.5s ease', textAlign: 'center' } }, 'Payment Tracker'),
     React.createElement(
       'div',
@@ -98,32 +147,30 @@ function App() {
     ),
     React.createElement(
       'div',
-      { style: { display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px' } },
+      { style: { display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '20px' } },
       payments.map((payment) =>
         React.createElement(
-          'div',
+          'span',
           {
             key: payment.id,
             style: {
               backgroundColor: getRandomColor(),
               color: '#333',
-              borderRadius: '5px',
-              padding: '10px',
+              borderRadius: '20px',
+              padding: '5px 10px',
               fontSize: '14px',
               fontWeight: 'bold',
               display: 'flex',
-              justifyContent: 'space-between',
               alignItems: 'center'
             }
           },
-          React.createElement('span', null, payment.name),
-          React.createElement('span', null, `$${payment.amount.toFixed(2)}`),
+          payment.name,
           isAdminMode && React.createElement(
             'button',
             {
               onClick: () => deletePayment(payment.id),
               style: {
-                marginLeft: '10px',
+                marginLeft: '5px',
                 background: 'none',
                 border: 'none',
                 color: '#f44336',
