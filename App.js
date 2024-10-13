@@ -112,8 +112,8 @@ function App() {
       { 
         style: { 
           display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', 
-          gap: '8px', 
+          gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', 
+          gap: '6px', 
           marginBottom: '20px' 
         } 
       },
@@ -125,16 +125,16 @@ function App() {
             style: {
               backgroundColor: getRandomColor(),
               color: '#333',
-              borderRadius: '8px',
-              padding: '8px',
-              fontSize: '12px',
+              borderRadius: '6px',
+              padding: '6px',
+              fontSize: '10px',
               fontWeight: 'bold',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
               textAlign: 'center',
-              height: '60px',
+              height: '50px',
               boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
             }
           },
