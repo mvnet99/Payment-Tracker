@@ -125,9 +125,9 @@ function App() {
             style: {
               backgroundColor: getRandomColor(),
               color: '#333',
-              borderRadius: '6px',
-              padding: '6px',
-              fontSize: '10px',
+              borderRadius: '8px',
+              padding: '8px',
+              fontSize: '12px',
               fontWeight: 'bold',
               display: 'flex',
               flexDirection: 'column',
