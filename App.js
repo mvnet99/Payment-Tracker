@@ -127,7 +127,7 @@ function App() {
               color: '#333',
               borderRadius: '8px',
               padding: '8px',
-              fontSize: '12px',
+              fontSize: '10px',
               fontWeight: 'bold',
               display: 'flex',
               flexDirection: 'column',
