@@ -71,7 +71,7 @@ function App() {
     'div',
     { style: { fontFamily: 'Arial, sans-serif', maxWidth: '600px', margin: '0 auto', padding: '20px', position: 'relative', zIndex: 1 } },
     React.createElement('style', null, fireworkStyles),
-    React.createElement('h1', { style: { color: titleColor, transition: 'color 0.5s ease', textAlign: 'left' } }, 'Payments Tracker'),
+    React.createElement('h1', { style: { color: titleColor, transition: 'color 0.5s ease', textAlign: 'left' } }, 'Payment Tracker'),
     React.createElement(
       'div',
       { style: { marginBottom: '10px', textAlign: 'left' } },
@@ -109,24 +109,36 @@ function App() {
     ),
     React.createElement(
       'div',
-      { style: { display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '20px' } },
+      { 
+        style: { 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', 
+          gap: '10px', 
+          marginBottom: '20px' 
+        } 
+      },
       payments.map((payment) =>
         React.createElement(
-          'span',
+          'div',
           {
             key: payment.name,
             style: {
               backgroundColor: getRandomColor(),
               color: '#333',
-              borderRadius: '20px',
-              padding: '5px 10px',
+              borderRadius: '10px',
+              padding: '10px',
               fontSize: '14px',
               fontWeight: 'bold',
               display: 'flex',
-              alignItems: 'center'
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              textAlign: 'center',
+              height: '80px'
             }
           },
-          `${payment.name} ($${payment.amount})`
+          React.createElement('div', null, payment.name),
+          React.createElement('div', null, `$${payment.amount}`)
         )
       )
     )
