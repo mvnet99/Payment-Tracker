@@ -112,8 +112,8 @@ function App() {
       { 
         style: { 
           display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', 
-          gap: '10px', 
+          gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', 
+          gap: '8px', 
           marginBottom: '20px' 
         } 
       },
@@ -125,19 +125,20 @@ function App() {
             style: {
               backgroundColor: getRandomColor(),
               color: '#333',
-              borderRadius: '10px',
-              padding: '10px',
-              fontSize: '14px',
+              borderRadius: '8px',
+              padding: '8px',
+              fontSize: '12px',
               fontWeight: 'bold',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
               textAlign: 'center',
-              height: '80px'
+              height: '60px',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
             }
           },
-          React.createElement('div', null, payment.name),
+          React.createElement('div', { style: { marginBottom: '4px' } }, payment.name),
           React.createElement('div', null, `$${payment.amount}`)
         )
       )
