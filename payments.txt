@@ -12,5 +12,6 @@
   {"name": "Avinash & Family", "amount": 85},
   {"name": "Jatin & Family", "amount": 85},
   {"name": "Varath & Family", "amount": 85},
-{"name": "Amit & Family", "amount": 85}
+{"name": "Amit & Family", "amount": 85},
+{"name": "Sachin & Family", "amount": 85}
 ]
